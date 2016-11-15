@@ -11,10 +11,15 @@ var gulp = require('gulp'),
 //Minificador de HTML
     htmlmin = require('gulp-htmlmin'),
 //Live Server
-    ls = require('gulp-live-server')
+    ls = require('gulp-live-server'),
+    //JS Hint
+    jshint = require('gulp-jshint'),
+    //Hint Stylish
+    jstylish = require('jshint-stylish')
+    
 
 //Tarefas executadas por padrão
-gulp.task('default',['sass','js','htmlmin','watch','serve']);
+gulp.task('default',['sass','js','libsjs','libscss','htmlmin','watch','serve']);
 
 //Compilador Sass
 gulp.task('sass', function () {
@@ -37,6 +42,22 @@ gulp.task('js', function () {
         .pipe(concat('script.min.js'))
         .pipe(uglify())
         .pipe(gulp.dest('prod/assets/js'))
+});
+
+//Uglifica e Concatena as Libs externas com o JS
+gulp.task('libsjs', function () {
+    return gulp
+        .src('dev/libs/**/*.js')
+        .pipe(concat('libsjs.min.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('prod/assets/libs/js'))
+});
+
+gulp.task('libscss', function () {
+    return gulp
+        .src('dev/libs/**/*.css')
+        .pipe(concat('libscss.min.css'))
+        .pipe(gulp.dest('prod/assets/libs/css'))
 });
 
 //Minificador de HTML
@@ -81,6 +102,12 @@ gulp.task('serve', function () {
     });
 })
 
+//JS Hint - Auxilia a debugar o JS
+gulp.task('hint', function () {
+    return gulp.src('dev/js/**/*.js')
+        .pipe(jshint())
+        .pipe(jshint.reporter(jstylish))
+})
 
 // gulp.task('tinypng', function () {
 //     return gulp
