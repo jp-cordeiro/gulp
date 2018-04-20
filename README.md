@@ -8,7 +8,7 @@ Estudo com Gulp
 
 -Concat
 
--Htmlimin
+-Htmlmin
 
 -Server e Livereload
 
